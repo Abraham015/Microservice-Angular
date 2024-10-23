@@ -1,6 +1,5 @@
-package dev.abraham.product;
+package dev.abraham.order;
 
-import io.restassured.RestAssured;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,42 +7,44 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Import;
-import org.testcontainers.containers.MongoDBContainer;
+import org.testcontainers.containers.MySQLContainer;
+import io.restassured.RestAssured;
 
 @Import(TestcontainersConfiguration.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ProductServiceApplicationTests {
+class OrderServiceApplicationTests {
 	@ServiceConnection
-	static MongoDBContainer mongoDBContainer=new MongoDBContainer("mongo");
+	static MySQLContainer mySQLContainer=new MySQLContainer("mysql");
 	@LocalServerPort
 	private Integer port;
 
 	@BeforeEach
 	void setUp() {
-		RestAssured.baseURI = "http://localhost";
+		RestAssured.baseURI="http://localhost";
 		RestAssured.port = port;
 	}
 
 	static {
-		mongoDBContainer.start();
+		mySQLContainer.start();
 	}
 
 	@Test
-	void createProduct() {
-		String requestBody= """
+	void createOrder() {
+		String order= """
 				{
-				    "name": "IPhone15",
-				    "description": "Smartphone developed and marketed by Apple Inc.",
-				    "price": 1000
+				  "skuCode": "ABC123",
+				  "price": 19.99,
+				  "quantity": 5
 				}
+				
 				""";
 		RestAssured.given()
 				.contentType("application/json")
-				.body(requestBody)
+				.body(order)
 				.when()
-				.post("api/v1/product")
+				.post("/api/v1/order")
 				.then()
 				.statusCode(200)
-				.body(Matchers.notNullValue());;
+				.body(Matchers.notNullValue());
 	}
 }
