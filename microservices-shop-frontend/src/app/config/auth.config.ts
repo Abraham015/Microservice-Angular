@@ -2,10 +2,10 @@ import { PassedInitialConfig } from 'angular-auth-oidc-client';
 
 export const authConfig: PassedInitialConfig = {
   config: {
-    authority: 'http://localhost:8181/realms/spring-microservices-security-realm',
+    authority: 'http://localhost:9090/realms/micro-service',
     redirectUrl: window.location.origin,
     postLogoutRedirectUri: window.location.origin,
-    clientId: 'angular-client',
+    clientId: 'micro-service-api',
     scope: 'openid profile offline_access',
     responseType: 'code',
     silentRenew: true,

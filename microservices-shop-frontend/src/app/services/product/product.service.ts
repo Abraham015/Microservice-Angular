@@ -12,10 +12,10 @@ export class ProductService {
   }
 
   getProducts(): Observable<Array<Product>> {
-    return this.httpClient.get<Array<Product>>('http://localhost:9000/api/product');
+    return this.httpClient.get<Array<Product>>('http://localhost:8222/api/v1/product');
   }
 
   createProduct(product: Product): Observable<Product> {
-    return this.httpClient.post<Product>('http://localhost:9000/api/product', product);
+    return this.httpClient.post<Product>('http://localhost:8222/api/v1/product', product);
   }
 }
